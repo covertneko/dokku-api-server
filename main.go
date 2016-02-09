@@ -9,6 +9,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Println("Index!")
 	fmt.Fprintln(w, "HTTP working over a socket!")
 }
 
@@ -21,5 +22,9 @@ func main() {
 	router.GET("/", Index)
 	router.GET("/test/:string", Test)
 
-	log.Fatal(ListenAndServeUnix("/tmp/dokku-api.sock", os.FileMode(0666), router))
+	if _, err := os.Stat("/tmp/dokku-api/api.sock"); os.IsNotExist(err) {
+		os.MkdirAll("/tmp/dokku-api", 0777)
+	}
+
+	log.Fatal(ListenAndServeUnix("/tmp/dokku-api/api.sock", os.FileMode(0666), router))
 }
