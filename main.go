@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"net/http"
-
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -17,5 +16,5 @@ func main() {
 	router := httprouter.New()
 	router.GET("/", Index)
 
-	log.Fatal(ListenAndServeUNIX("/tmp/dokku-api.sock", os.FileMode(0666), router))
+	log.Fatal(ListenAndServeUnix("/tmp/dokku-api.sock", os.FileMode(0666), router))
 }
