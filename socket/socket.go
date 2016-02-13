@@ -1,5 +1,5 @@
 // Utilities for serving HTTP over Unix sockets
-package main
+package socket
 
 import (
 	"net"
@@ -8,21 +8,21 @@ import (
 	"fmt"
 )
 
-type Server http.Server
+type server http.Server
 
 // Serve HTTP requests on a Unix socket with a given file mode
 // Pretty much copied from the implementation in
 // github.com/valyala/fasthttp/server.go
-func ListenAndServeUnix(addr string, mode os.FileMode, handler http.Handler) error {
-	srv := &Server {
+func ListenAndServe(addr string, mode os.FileMode, handler http.Handler) error {
+	srv := &server {
 		Addr: addr,
 		Handler: handler,
 	}
 
-	return srv.ListenAndServeUnix(mode)
+	return srv.ListenAndServe(mode)
 }
 
-func (srv *Server) ListenAndServeUnix(mode os.FileMode) error {
+func (srv *server) ListenAndServe(mode os.FileMode) error {
 	// Remove old socket, if necessary/possible
 	if err := os.Remove(srv.Addr); err != nil && !os.IsNotExist(err) {
 		fmt.Errorf("Could not remove existing unix socket at %q: %s", srv.Addr, err)
