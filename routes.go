@@ -1,59 +1,45 @@
 package main
 
 import (
-	"fmt"
-	"encoding/json"
 	"net/http"
-	"github.com/julienschmidt/httprouter"
 
-	"github.com/nikelmwann/dokku-api/dokku"
-	"github.com/nikelmwann/dokku-api/models"
+	"github.com/labstack/echo"
 )
 
-func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Println("Index!")
-	fmt.Fprintln(w, "HTTP working over a socket!")
+func Index(c *echo.Context) error {
+	return c.String(http.StatusOK, "HTTP working over a socket!")
 }
 
-func Test(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	fmt.Fprintln(w, params.ByName("string"))
-}
+// func Apps(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+// 	apps, err := resources.GetApps()
+// 	if err != nil {
+// 		fmt.Fprintln(w, "Error requesting apps list: ", err)
+// 		return
+// 	}
 
-func AppIndex(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	args := []string{"apps"}
+// 	data, err := json.MarshalIndent(apps, "", "  ")
+// 	if err != nil {
+// 		fmt.Fprintln(w, "Error serializing apps list: ", err)
+// 		return
+// 	}
 
-	output, err := dokku.Exec(args...)
-	if err != nil {
-		fmt.Fprintln(w, "Error requesting apps list: ", err)
-		return
-	}
+// 	w.Write(data)
+// }
 
-	// Skip first line of output which is simply "=====> My Apps"
-	<-output
+// func App(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+// 	name := params.ByName("name")
 
-	var apps models.Apps
-	// Remaining output is the list of apps; one app per line
-	for line := range output {
-		app, err := models.GetApp(line)
-		if err != nil {
-			fmt.Fprintln(w, "Error requesting apps list: ", err)
-			return
-		}
+// 	app, err := resources.GetApp(name)
+// 	if err != nil {
+// 		fmt.Fprintf(w, "Error requesting app %s: %s\n", name, err)
+// 		return
+// 	}
 
-		apps = append(apps, app)
-	}
+// 	data, err := json.MarshalIndent(app, "", "  ")
+// 	if err != nil {
+// 		fmt.Fprintf(w, "Error serializing app %s: %s\n", name, err)
+// 		return
+// 	}
 
-	json.NewEncoder(w).Encode(apps)
-}
-
-func AppShow(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	name := params.ByName("name")
-
-	app, err := models.GetApp(name)
-	if err != nil {
-		fmt.Fprintf(w, "Error requesting app %s: %s\n", name, err)
-		return
-	}
-
-	json.NewEncoder(w).Encode(app)
-}
+// 	w.Write(data)
+// }
