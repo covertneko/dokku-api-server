@@ -2,16 +2,13 @@ package dokku
 
 import (
 	"fmt"
-	"log"
-	"time"
 	"strings"
 	"os/exec"
 	"bufio"
 )
 
-func Exec(args... string) (output <-chan string, err error) {
+func Exec(args... string) (output []string, err error) {
 	cmd := exec.Command("dokku", args...)
-	out := make(chan string, 1)
 	cmdString := strings.Join(cmd.Args, " ")
 
 	cmdOut, err := cmd.StdoutPipe()
@@ -22,18 +19,13 @@ func Exec(args... string) (output <-chan string, err error) {
 
 	// Send output line-by-line through output channel
 	scanner := bufio.NewScanner(cmdOut)
+	done := make(chan bool)
 	go func() {
-		defer close(out)
-		log.Printf("Sending command output.")
 		for scanner.Scan() {
-			select {
-			case out <- scanner.Text():
-			case <-time.After(time.Second * 3):
-				log.Printf("Sending output of command %q timed out.", cmdString)
-				return
-			}
+			output = append(output, scanner.Text())
 		}
-	} ()
+		done <- true
+	}()
 
 	if err = cmd.Start(); err != nil {
 		err = fmt.Errorf("Error while executing %q: %s", cmdString, err)
@@ -45,7 +37,7 @@ func Exec(args... string) (output <-chan string, err error) {
 		return
 	}
 
-	output = out
+	<-done
 	return
 }
 
