@@ -6,7 +6,8 @@ import (
 
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-	"github.com/nikelmwann/dokku-api/resources"
+	"github.com/nikelmwann/dokku-api/dokku"
+	r "github.com/nikelmwann/dokku-api/resources"
 )
 
 func main() {
@@ -14,9 +15,11 @@ func main() {
 	e.Use(mw.Logger())
 	e.Use(mw.Recover())
 
+	s := dokku.New()
+
 	e.Get("/", Index)
-	e.Get("/apps", resources.HandlerFor(resources.Apps{}))
-	e.Get("/apps/:name", resources.HandlerFor(resources.App{}))
+	e.Get("/apps", r.HandlerFor(r.Apps{}, s))
+	e.Get("/apps/:name", r.HandlerFor(r.App{}, s))
 
 	// Get socket path from environment or default
 	var sockpath string

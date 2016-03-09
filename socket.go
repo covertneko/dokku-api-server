@@ -2,10 +2,10 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 	"os"
-	"fmt"
 
 	"github.com/labstack/echo"
 )
