@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
 	"bufio"
-	"strings"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
@@ -16,21 +16,23 @@ import (
 )
 
 const (
-	PLUGIN_COMMAND_RESPONSE_SUCCESS = "ok"
+	CACHE_COMMAND_RESPONSE_SUCCESS = "OK"
 )
 
-func handlePluginCommand(d *dokku.Dokku, conn net.Conn) {
+func handleCacheCommand(d *dokku.Dokku, conn net.Conn) {
 	defer conn.Close()
+	reader := bufio.NewReader(conn)
 
+CLI:
 	for {
-		_command, err := bufio.NewReader(conn).ReadString('\n')
+		_command, err := reader.ReadString('\n')
 		if err != nil {
 			conn.Write([]byte("Error reading command\n"))
 			continue
 		}
 
 		// Trim trailing newline from command
-		command := _command[:len(_command) - 1]
+		command := _command[:len(_command)-1]
 
 		cols := strings.Split(command, " ")
 
@@ -56,9 +58,9 @@ func handlePluginCommand(d *dokku.Dokku, conn net.Conn) {
 				conn.Write([]byte(fmt.Sprintf("Unrecognized type %q", _type) + "\n"))
 				continue
 			}
-			conn.Write([]byte(PLUGIN_COMMAND_RESPONSE_SUCCESS + "\n"))
+			conn.Write([]byte(CACHE_COMMAND_RESPONSE_SUCCESS + "\n"))
 			break
-		case "update":
+		case "fetch":
 			switch _type {
 			case "app":
 				d.Apps.Invalidate(id)
@@ -72,15 +74,17 @@ func handlePluginCommand(d *dokku.Dokku, conn net.Conn) {
 				conn.Write([]byte(fmt.Sprintf("Unrecognized type %q", _type) + "\n"))
 				continue
 			}
-			conn.Write([]byte(PLUGIN_COMMAND_RESPONSE_SUCCESS + "\n"))
+			conn.Write([]byte(CACHE_COMMAND_RESPONSE_SUCCESS + "\n"))
 			break
+		case "exit":
+			break CLI
 		default:
 			conn.Write([]byte(fmt.Sprintf("Unrecognized action %q", action) + "\n"))
 		}
 	}
 }
 
-func listenPlugin(d *dokku.Dokku, socketPath string) error {
+func listenCache(d *dokku.Dokku, socketPath string) error {
 	ln, err := ListenSocket(socketPath, 0666)
 	if err != nil {
 		return err
@@ -92,10 +96,10 @@ func listenPlugin(d *dokku.Dokku, socketPath string) error {
 		conn, err := ln.Accept()
 		if err != nil {
 			log.Println("Error accepting connection: ", err.Error())
-			continue;
+			continue
 		}
 
-		go handlePluginCommand(d, conn)
+		go handleCacheCommand(d, conn)
 	}
 }
 
