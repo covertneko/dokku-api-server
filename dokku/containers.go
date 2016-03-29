@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	m "github.com/nikelmwann/dokku-api/models"
+	m "github.com/nikelmwann/dokku-api-server/models"
 	"github.com/patrickmn/go-cache"
 )
 

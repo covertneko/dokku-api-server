@@ -1,0 +1,57 @@
+{
+	"ImportPath": "github.com/nikelmwann/dokku-api-server",
+	"GoVersion": "go1.6",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-224-gaca5b04",
+			"Rev": "aca5b047ed14d17224157c3434ea93bf6cdaadee"
+		},
+		{
+			"ImportPath": "github.com/labstack/echo",
+			"Comment": "v1.3-57-g8490000",
+			"Rev": "849000076287d6fdda4096792d188e704d22526e"
+		},
+		{
+			"ImportPath": "github.com/labstack/gommon/color",
+			"Comment": "v0.0.3-39-gbfff5bf",
+			"Rev": "bfff5bf04688a4048a5cb4dd3b3f0697caaad19c"
+		},
+		{
+			"ImportPath": "github.com/labstack/gommon/log",
+			"Comment": "v0.0.3-39-gbfff5bf",
+			"Rev": "bfff5bf04688a4048a5cb4dd3b3f0697caaad19c"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Rev": "9fdad7c47650b7d2e1da50644c1f4ba7f172f252"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "56b76bdf51f7708750eac80fa38b952bb9f32639"
+		},
+		{
+			"ImportPath": "github.com/patrickmn/go-cache",
+			"Rev": "1881a9bccb818787f68c52bfba648c6cf34c34fa"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "cbbbe2bc0f2efdd2afb318d93f1eadb19350e4a3"
+		},
+		{
+			"ImportPath": "golang.org/x/net/http2",
+			"Rev": "cbbbe2bc0f2efdd2afb318d93f1eadb19350e4a3"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "cbbbe2bc0f2efdd2afb318d93f1eadb19350e4a3"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "320cb01ddbbf0473674c2585f9b6e245721de355"
+		}
+	]
+}

@@ -5,7 +5,7 @@ import (
 	//"strings"
 
 	"github.com/labstack/echo"
-	"github.com/nikelmwann/dokku-api/dokku"
+	"github.com/nikelmwann/dokku-api-server/dokku"
 )
 
 type Apps struct {

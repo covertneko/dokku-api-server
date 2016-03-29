@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
-	"github.com/nikelmwann/dokku-api/dokku"
+	"github.com/nikelmwann/dokku-api-server/dokku"
 )
 
 const (

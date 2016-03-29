@@ -3,7 +3,7 @@ package resources
 import (
 	"net/http"
 	"github.com/labstack/echo"
-	"github.com/nikelmwann/dokku-api/dokku"
+	"github.com/nikelmwann/dokku-api-server/dokku"
 )
 
 type Resource interface {

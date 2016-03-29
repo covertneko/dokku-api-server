@@ -11,8 +11,8 @@ import (
 
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-	"github.com/nikelmwann/dokku-api/dokku"
-	r "github.com/nikelmwann/dokku-api/resources"
+	"github.com/nikelmwann/dokku-api-server/dokku"
+	r "github.com/nikelmwann/dokku-api-server/resources"
 )
 
 const (

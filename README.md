@@ -7,7 +7,7 @@ instance running on the host machine, though it should work with anything - it
 may just lack certain features or details.
 
 This can be installed easily on any Dokku host via the
-[dokku-api](https://github.com/nikelmwann/dokku-api) plugin.
+[dokku-api](https://github.com/nikelmwann/dokku-api-server) plugin.
 
 ---
 
